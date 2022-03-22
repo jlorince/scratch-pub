@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: e594e7da-655f-4f3a-9d03-34a019e95214 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 391748d0-dd69-43f5-b610-71c4344dd65f # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: b4e8cffb-936c-4823-b213-21cb09a60946 # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: farts
@@ -23,4 +23,12 @@ appLayout:
     - CATEGORIES
     - STATUS
     - TABLE_OF_CONTENTS
-  rows: []
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 32e78d93-f0d5-4bd6-9bd5-fa3fab6eb53e
+              height: null
+              showLabel: true
