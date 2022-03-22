@@ -1,7 +1,7 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: b902cfc8-1500-4c7e-b071-1a937d40cc70 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
-  description: "hi adam"
+  sourceVersionId: 789f95dd-ef88-4de7-8145-c79e95c7c99c # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
   projectId: 351d4dc4-a4c1-4d9a-8f79-48a8e06f2a16 # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: adam
   codeLanguage: PYTHON
