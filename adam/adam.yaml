@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 789f95dd-ef88-4de7-8145-c79e95c7c99c # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: fd8b633c-00f8-4880-849b-288746c28478 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: 351d4dc4-a4c1-4d9a-8f79-48a8e06f2a16 # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: adam
@@ -23,4 +23,12 @@ appLayout:
     - CATEGORIES
     - STATUS
     - TABLE_OF_CONTENTS
-  rows: []
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 10a04d9a-0fd9-425e-8ce7-494d68a11c35
+              height: null
+              showLabel: true
