@@ -1,0 +1,34 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 36cb6695-db89-4769-9e14-dfdd01829516 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: c669d896-aead-4ed1-86c9-b110a3c46d43 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: claire loves prs
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 2b86a16e-71b1-4601-8d55-41300b8dcbe1 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "# hi claire"
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 2b86a16e-71b1-4601-8d55-41300b8dcbe1
+              height: null
+              showLabel: true
