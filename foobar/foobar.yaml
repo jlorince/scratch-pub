@@ -1,13 +1,18 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: beb02736-a1f3-4d1e-af22-f3e4e7345f3b # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: b0847c76-2c9c-43e6-8a79-f264c449bdfe # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: a2fc7154-b2e9-4149-a82e-6520136c96ca # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: foobar
   codeLanguage: PYTHON
 projectAssets: {}
 sharedAssets: {}
-cells: []
+cells:
+  - cellId: 0485fa1e-4100-4cee-af8e-b17e82da47a8 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: adf
 appLayout:
   fullWidth: false
   visibleMetadataFields:
