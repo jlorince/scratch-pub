@@ -1,0 +1,21 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: beb02736-a1f3-4d1e-af22-f3e4e7345f3b # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: a2fc7154-b2e9-4149-a82e-6520136c96ca # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: foobar
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells: []
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows: []
