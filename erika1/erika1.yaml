@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: ab9bfe1a-7656-4668-95fb-d7ecf9bbdc87 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 4fe42c7f-1d0b-4519-81aa-4574faae7b09 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: f962f91a-4c23-4ff2-af11-3c58869f160b # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: erika1
@@ -23,4 +23,12 @@ appLayout:
     - CATEGORIES
     - STATUS
     - TABLE_OF_CONTENTS
-  rows: []
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 6f244818-3291-41de-830d-7fef0b045807
+              height: null
+              showLabel: true
