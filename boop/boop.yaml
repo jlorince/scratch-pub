@@ -1,0 +1,34 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 7f8e9e32-b98c-481a-a87a-ef30940b3daa # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: d6b6a21e-e087-4943-96e9-26daf2f03c86 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: boop
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: e59a6ac0-ce29-43ac-bd29-58e5b83c9834 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: asdsa
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: e59a6ac0-ce29-43ac-bd29-58e5b83c9834
+              height: null
+              showLabel: true
