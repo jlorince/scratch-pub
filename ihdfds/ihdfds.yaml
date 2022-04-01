@@ -1,0 +1,34 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 0044aa32-3ca0-4793-80a1-c25943bd1eb2 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 0cc44042-62ac-49d7-896c-586d7cdf5892 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: ihdfds
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 9d62473c-b56b-4f9f-a1d4-64e76d5f7eea # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "123"
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 9d62473c-b56b-4f9f-a1d4-64e76d5f7eea
+              height: null
+              showLabel: true
