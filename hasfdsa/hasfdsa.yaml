@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 5c6636bd-42a3-4a2b-9e03-835b2ad11cf8 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 54f87a86-8439-4f87-814a-3c56031aa18e # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: c64666c2-64ff-4a74-a66c-25fd2e4b56b6 # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: hasfdsa
@@ -23,4 +23,12 @@ appLayout:
     - CATEGORIES
     - STATUS
     - TABLE_OF_CONTENTS
-  rows: []
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 01157b7f-c2d8-4603-a4b2-384ac007df34
+              height: null
+              showLabel: true
