@@ -1,0 +1,34 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: a8f0b8f7-adc7-41a6-a1ec-e0f1399eb70b # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 5e3110d8-e658-43d2-a932-fa570c8b9a30 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: sdfsduig
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 7d6e527c-4aa8-4d12-9ed9-9f0b1f2331c4 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "123"
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 7d6e527c-4aa8-4d12-9ed9-9f0b1f2331c4
+              height: null
+              showLabel: true
