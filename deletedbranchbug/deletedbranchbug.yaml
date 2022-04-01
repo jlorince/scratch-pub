@@ -1,0 +1,34 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 92acbffd-67d0-49f6-ba59-371dfd89704d # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: f5ef516f-cd37-4efa-9a34-379bc40359d2 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: deletedbranchbug
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 1d5a11ec-2011-4459-88e1-bb7adf72190e # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "123"
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 1d5a11ec-2011-4459-88e1-bb7adf72190e
+              height: null
+              showLabel: true
