@@ -1,0 +1,39 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 799a90d3-76b7-4db1-89f7-c030ad55921c # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: e6962a73-49e9-430d-b1ed-c164589ff52f # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: gitdstuf
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: a711e3be-8503-4523-b6ea-4ca58019459c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: fa8fe28a-d392-4f23-be51-27f5e76252b1 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: whatever
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: fa8fe28a-d392-4f23-be51-27f5e76252b1
+              height: null
+              showLabel: true
