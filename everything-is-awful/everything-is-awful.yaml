@@ -1,0 +1,26 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: 9512eb0b-35da-46ee-a0dd-fab5be15d4f0 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 675b61f0-1c68-4674-b074-8d89ed267152 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: everything is awful
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 30e48c56-94d8-4ca0-ab5f-e1ca8f5b729a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "# hello"
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows: []
