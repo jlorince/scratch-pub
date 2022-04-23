@@ -1,0 +1,1228 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: e56d8cff-0d10-44ec-bcdb-8465fff6c834 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: |
+    This made-up Dune pricing exercise is an analog to the kind of work you might do at a real company when evaluating your pricing model. Open the comments for explanations of cells. This is an example of a high complexity Hex app. 
+  projectId: c0c866f6-0ded-409d-875f-d89cff507eaa # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: What's the Price of Spice?
+  codeLanguage: PYTHON
+  status:
+    name: Approved
+  categories:
+    - name: Internal
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 1825338c-e3b8-4ac7-8b67-ecd2b8486482 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "**There are comments in the logic view of this project every time a new cell type or Hex concept is introduced that highlight what's going on in each cell. Look at the comments on each cell to learn more about what it does and why.**"
+  - cellId: 15f762a7-7f10-4f98-a7ce-0a8a3633ebfb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        import pandas as pd
+        import numpy as np
+        import altair
+        import json
+  - cellId: a03eb901-2ecc-4561-bf93-0a7a02cd846d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: SELECT * FROM atreides.spice_purchases
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: spice_purchases
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: c6af563e-474e-40c2-8dd7-9ef5e121849a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: 98% of Atreides Corp. revenue is attributed to spice production and sale. In the last 3 months alone, **{{(spice_purchases['grams_spice'].sum() / 10) | round | int}}** decagrams of spice were produced and sold, netting **{{"${:,.2f}".format(spice_purchases['total_cost'].sum())}}** solari on the Imperial Market.
+  - cellId: 70c691c1-98be-4748-9683-84d04de8be67 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT CREATED_DATE, COUNT(*) AS count,SUM(price_per_g*grams_spice) AS revenue, AVG(price_per_g) AS avg_price
+        FROM spice_purchases
+        GROUP BY 1
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: day_facts
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: f1826374-b75b-4d82-aed3-c39de3233f88 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Last 3mo Spice revenue
+    cellType: CHART
+    config:
+      height: 520
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              x:
+                field: CREATED_DATE
+                type: temporal
+              y:
+                field: revenue
+                type: quantitative
+              color:
+                value: "#654A94"
+        resolve:
+          scale:
+            y: independent
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: day_facts
+  - cellId: 6f63f1d5-8de8-4596-bc05-9439b5f37ef3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        # Problems With Our Current Pricing Model
+
+        Currently Atreides Corp sets contractual, fixed prices with each of the buyers and entities that we do business with. These prices range from **{{"\${:,.2f}".format(spice_purchases['price_per_g'].min())}} to {{"\${:,.2f}".format(spice_purchases['price_per_g'].max())}} per gram of Spice Melange**, depending on volume and relationship.
+
+        Several facts make this problematic.
+  - cellId: 7207ff8a-75c1-4e0a-8b6a-342742fffb3b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT price_per_g,
+               COUNT(*) AS number_transactions
+        FROM spice_purchases
+        GROUP BY 1
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: price_dist
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 0aa713ea-1359-440d-9d88-6e90f4e1971f # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        ### 1. Prices are fairly static.
+        They are locked in at initial time of contract. It's difficult to renegotiate these prices.
+        Fluctuations in the daily average sold price are due to different prices for customers— See #2.
+  - cellId: ad45e851-9332-4e6a-9018-d96e27408107 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: line
+              clip: true
+              tooltip: true
+              interpolate: monotone
+            encoding:
+              x:
+                field: CREATED_DATE
+                type: temporal
+              y:
+                field: avg_price
+                type: quantitative
+                scale:
+                  domainMin: 35000
+                  domainMax: 50000
+              color:
+                value: "#654A94"
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: day_facts
+  - cellId: 2fd02ecb-5105-480d-b5a7-a60ac7c118fc # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        ### 2. Customers have different prices
+        Negotiated prices range broadly based on initial deal size.
+        There are nearly as many transactions done at the lowest price tier (s21,000) as there are at the highest (s60,000+).
+  - cellId: 903eef68-cf04-4e40-825c-a40f753322cf # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              x:
+                field: price_per_g
+                type: quantitative
+                bin:
+                  step: 1000
+                sort: ascending
+              y:
+                field: number_transactions
+                type: quantitative
+                aggregate: sum
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: price_dist
+  - cellId: 6748096f-44c5-4d51-9684-6e8acd1cd26c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT CREATED_DATE,
+               production_cost_per_g,
+               shipping_cost_per_g
+        FROM atreides.daily_spice_production_costs
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: daily_spice_costs
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 23702cf4-f88b-4188-9694-7ce71d7054d2 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT s.CREATED_DATE,
+               AVG(s.price_per_g) AS price,
+               AVG(d.production_cost_per_g) AS prod_cost,
+               AVG(d.shipping_cost_per_g) AS ship_cost,
+               AVG(d.production_cost_per_g + d.shipping_cost_per_g) AS total_cost,
+               AVG(s.price_per_g/(d.production_cost_per_g + d.shipping_cost_per_g)) AS avg_margin
+        FROM spice_purchases s LEFT JOIN daily_spice_costs d ON d.CREATED_DATE = s.CREATED_DATE
+        GROUP BY 1
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: daily_costs_vs_prices
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: c7a08d23-ccf7-4930-ace4-066ec17cd8e6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        ### 3. Production costs are highly variable.
+        They change unpredictably and constantly based on climatic variables, fuel cost, and politics— in contrast to the price at which we can sell the product. We don't know the cost of production until after all the numbers are run at the end of the day.
+  - cellId: c1efaa16-6afd-4b68-a978-c861bb8d37a1 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: line
+              clip: true
+              interpolate: monotone
+              point: true
+            encoding:
+              x:
+                field: CREATED_DATE
+                type: temporal
+              y:
+                field: total_cost
+                type: quantitative
+                scale:
+                  domainMin: 10000
+                  domainMax: 22000
+              color:
+                value: "#654A94"
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: daily_costs_vs_prices
+  - cellId: 8087f6bb-be11-4341-90db-bc857687a1f7 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "## Top Customers and $$ left on the table"
+  - cellId: d3202104-b0ca-4cf4-9eda-124dd64c6717 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT buyer_name, associated_entity,
+               SUM(total_cost) AS total_spend,
+               COUNT(*) AS total_transactions,
+               SUM(grams_spice) AS grams_purchased,
+               AVG(price_per_g) AS average_price
+        FROM spice_purchases
+        GROUP BY 1,2
+        ORDER BY 3 DESC
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: customer_facts
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      tableDisplayConfig:
+        pageSize: 69
+        hideIndex: false
+        defaultSortColumn: grams_purchased
+        defaultSortDirection: DESC
+        conditionalFormatting:
+          rulesets:
+            - type: GRADIENT
+              style: RED_WHITE_GREEN
+              columns:
+                type: INCLUDE
+                includedColumns:
+                  - total_spend
+            - type: GRADIENT
+              style: RED_WHITE_GREEN
+              columns:
+                type: INCLUDE
+                includedColumns:
+                  - total_transactions
+            - type: GRADIENT
+              style: RED_WHITE_GREEN
+              columns:
+                type: INCLUDE
+                includedColumns:
+                  - grams_purchased
+            - type: GRADIENT
+              style: RED_WHITE_GREEN
+              columns:
+                type: INCLUDE
+                includedColumns:
+                  - average_price
+        filters: null
+        columnProperties:
+          - originalName: total_spend
+            renameTo: null
+            size: 158
+            wrapText: null
+            displayFormat:
+              format: CURRENCY
+              currency: USD
+              columnType: NUMBER
+              numDecimalDigits: 2
+          - originalName: total_transactions
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: buyer_name
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: average_price
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat:
+              format: CURRENCY
+              currency: USD
+              columnType: NUMBER
+              numDecimalDigits: 2
+          - originalName: grams_purchased
+            renameTo: null
+            size: 146
+            wrapText: null
+            displayFormat:
+              format: NUMBER
+              currency: USD
+              columnType: NUMBER
+              numDecimalDigits: 2
+          - originalName: associated_entity
+            renameTo: null
+            size: 209
+            wrapText: null
+            displayFormat: null
+  - cellId: 15bf2580-6c7f-4ad9-9607-b0a43a5f9da3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Customers of interest
+    cellType: INPUT
+    config:
+      inputType: MULTISELECT
+      name: customers_of_interest
+      outputType: DYNAMIC
+      options:
+        multiValueOptions:
+          dfName: customer_facts
+          columnName: buyer_name
+          variableName: customer_facts['buyer_name']
+      defaultValue:
+        - Basq
+  - cellId: cea483f9-0ffa-42d7-8dcc-aa7225ad53fb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        config = json.loads("""
+        {
+            "width": 500,
+            "height": 400,
+            "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+            "layer": [
+                {
+                    "data": {
+                        "name": "layer00"
+                    },
+                    "mark": {
+                        "type": "point",
+                        "clip": true,
+                        "tooltip": true
+                    },
+                    "encoding": {
+                        "opacity": {"value": 1},
+                        "x": {
+                            "field": "total_spend",
+                            "type": "quantitative"
+                        },
+                        "y": {
+                            "field": "total_transactions",
+                            "type": "quantitative"
+                        },
+                        "color": {
+                            "field": "buyer_name",
+                            "type": "nominal",
+                            "legend": null
+                        },
+                        "size": {
+                            "field": "grams_purchased",
+                            "type": "quantitative"
+                        }
+                    }
+                },
+                {
+                    "data": {
+                        "name": "layer01"
+                    },
+                    "mark": {
+                        "type": "point",
+                        "clip": true,
+                        "tooltip": true
+                    },
+                    "encoding": {
+                        "opacity": {"value": 1},
+                        "x": {
+                            "field": "total_spend",
+                            "type": "quantitative"
+                        },
+                        "y": {
+                            "field": "total_transactions",
+                            "type": "quantitative"
+                        },
+                        "color": {
+                            "field": "buyer_name",
+                            "type": "nominal",
+                            "legend": null
+                        },
+                        "size": {
+                            "field": "grams_purchased",
+                            "type": "quantitative"
+                        }
+                    }
+                },
+                {"data": {
+                        "name": "layer00"
+                    },
+              "mark": {
+                "type": "line",
+                "color": "firebrick"
+              },
+              "transform": [
+                {
+                  "regression": "total_spend",
+                  "on": "total_transactions",
+                  "method": "exp"
+                }
+              ],
+              "encoding": {
+                "x": {
+                  "field": "total_spend",
+                  "type": "quantitative"
+                },
+                "y": {
+                  "field": "total_transactions",
+                  "type": "quantitative"
+                }
+              }
+            }
+            ],
+            "resolve": {
+                "scale": {}
+            },
+            "datasets": {
+                "layer00": [
+                    {
+                        "name": "dummy",
+                        "value": 0
+                    }
+                ]
+            }
+        }
+        """)
+  - cellId: 61e8eded-9330-4317-8ab4-24347364582e # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        if customers_of_interest:
+           config['layer'][0]['encoding']['opacity']['value'] = 0.25
+           dataset = customer_facts[customer_facts['buyer_name'].isin(customers_of_interest)]
+        else:
+            config['layer'][0]['encoding']['opacity']['value'] = 1
+            dataset = customer_facts
+  - cellId: 7fe390df-1e85-4f27-a9ae-b963581e0721 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        Some of our most frequently purchasing customers are actually undermonetized. Basq, despite being our 4th largest buyer by volume, is only our **44th** highest spending customer, due to an unfortunately timed price negotiation that sorely needs updating! The 1st, 2nd, 3rd, and 5th largest buyers by volume all pay, overall, over twice as much as Basq.
+
+        We need a better pricing structure that still feels fair to our loyal customers, but doesn't leave us exposed to undpredictable production costs and leaving money on the table at large customers.
+  - cellId: 1bbd7734-c024-49e6-9a06-af7b1645ddbf # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: This distribution should be linear
+    cellType: CODE
+    config:
+      source: |-
+        chart_customer_facts = altair.Chart.from_json(json.dumps(config))
+        chart_customer_facts.datasets.layer00 = customer_facts.to_json(orient='records')
+        chart_customer_facts.datasets.layer01 = dataset.to_json(orient='records')
+        chart_customer_facts.display(actions=False)
+  - cellId: f2eeae43-8ab0-48cb-aff9-8f7da3b1109c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Customers of Interest
+    cellType: TABLE_DISPLAY
+    config:
+      dataFrameVariableName: dataset
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: buyer_name
+            renameTo: null
+            size: 125
+            wrapText: null
+            displayFormat: null
+          - originalName: associated_entity
+            renameTo: null
+            size: 204
+            wrapText: null
+            displayFormat: null
+          - originalName: grams_purchased
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: average_price
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: total_spend
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: total_transactions
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: a26b8eb1-ae83-4be9-a996-9d90f62d5bdc # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        # A Better Model
+        A better model would be adaptive, charging perhaps even a lower average rate, but on a more frequently updating "spot price" basis. Customers would negotiate a coefficient of the baseline production cost based on their load commitments.
+  - cellId: 98aee329-f9bb-4534-83d2-f3d178b5b153 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        There are a few possible pricing models:
+        * The baseline model is just the existing default state with no changes to the pricing model. It's here as a control.
+        * The carryforward model takes yesterday's production cost and assumes that it'll hold true today as well. It's that simple! At the end of the day, we get the real production cost, and use that to infer tomorrow's fixed sale price.
+        * The trailing_4 model sets today's sale price to the trailing 4 week average of production costs. Ideally, this smooths out spikes and provides more buffer.
+
+        **The charts and parameters below are set on the most optimal model: a 4-day trailing production cost average with a 1.8x multiplier on production cost**
+
+        _You can manipulate the parameters to explore other possible models_
+  - cellId: c385270f-562b-49e1-94a3-2de298ab05be # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Simulate Model
+    cellType: INPUT
+    config:
+      inputType: DROPDOWN
+      name: simulate_model
+      outputType: STRING
+      options:
+        valueOptions:
+          - baseline
+          - carryforward
+          - trailing_4
+      defaultValue: trailing_4
+  - cellId: ee115d74-f551-4046-9997-7033da03efff # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Cost coefficient
+    cellType: INPUT
+    config:
+      inputType: SLIDER
+      name: profit_coefficient
+      outputType: NUMBER
+      options:
+        min: 1
+        max: 10
+        step: 0.05
+      defaultValue: 1.8
+  - cellId: 196dafd5-e4b2-4e0f-8799-79bbcc78579c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        simulated_data = daily_costs_vs_prices
+        avg_price = simulated_data['price'].mean()
+        avg_margin = simulated_data['avg_margin'].mean()
+        simulated_data.sort_values(by=['CREATED_DATE'],inplace=True)
+        simulated_data['baseline_cost'] = simulated_data['total_cost']
+        simulated_data['carryforward_cost'] = simulated_data['total_cost'].shift(1)
+        simulated_data['trailing_4_cost'] = simulated_data['total_cost'].rolling(4).mean()
+  - cellId: 4d117619-2452-4ece-9ed5-f31b19c0d352 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT buyer_name, price_per_g, price_per_g::float/{{avg_price }} AS buyer_price_coefficient
+        FROM spice_purchases
+        GROUP BY 1,2
+        ORDER BY 1 ASC
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: price_by_buyer
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 33aa9f98-5b1c-4a33-a80c-edfd71e927bb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT sp.CREATED_DATE,
+               sp.buyer_name,
+               si.carryforward_cost *  (pb.buyer_price_coefficient + {{profit_coefficient}}) AS carryforward,
+               si.trailing_4_cost *  (pb.buyer_price_coefficient + {{profit_coefficient}}) AS trailing_4,
+               pb.price_per_g AS baseline_price
+        FROM spice_purchases sp
+        LEFT JOIN simulated_data si ON si.CREATED_DATE = sp.CREATED_DATE
+        LEFT JOIN price_by_buyer pb ON pb.buyer_name = sp.buyer_name
+        GROUP BY 1,
+                 2,3,4,5
+                 ORDER BY 2 ASC
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: buyers_prices
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 18773d9a-bf6f-4f52-9408-a035c3400418 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        buyers_prices = buyers_prices.melt(id_vars=["CREATED_DATE", "buyer_name"], 
+                var_name="model_type", 
+                value_name="price")
+  - cellId: 7d98d596-bb20-4d62-ba94-3750269af4ed # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        WITH baseline AS
+          (SELECT *
+           FROM buyers_prices
+           WHERE model_type = 'baseline_price' )
+        SELECT baseline.buyer_name,
+               COALESCE(AVG(modeled.price/baseline.price)-1,0) AS average_price_increase,
+               COALESCE(AVG(modeled.price),AVG(baseline.price)) AS average_modeled_price,
+               AVG(baseline.price) AS average_baseline_price
+        FROM baseline
+        LEFT JOIN buyers_prices modeled ON baseline.buyer_name = modeled.buyer_name
+        AND modeled.model_type = {{simulate_model}}
+        GROUP BY 1
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: simulated_prices_comparison
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: d79909bd-2eaa-4beb-8a0a-551ffde6e36c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Acceptable price increase percentage
+    cellType: INPUT
+    config:
+      inputType: SLIDER
+      name: acceptable_price_increase_percentage
+      outputType: NUMBER
+      options:
+        min: 0
+        max: 20
+        step: 0.5
+      defaultValue: 5
+  - cellId: c26b7e44-5988-4889-a8b7-fb927af38f31 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        import pandas as pd
+        d = {'threshold': [acceptable_price_increase_percentage/100], 'y': [50], 'size': [.005]}
+        chart_pct = pd.DataFrame(data=d)
+  - cellId: 8b1ffe62-18e6-4dfd-8122-90e200f32da2 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: "# of customers that would have price increases"
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+            encoding:
+              x:
+                field: threshold
+                type: quantitative
+              y:
+                field: y
+                type: quantitative
+                scale:
+                  domainMax: 20
+              color:
+                value: "#D13913"
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+            encoding:
+              x:
+                field: average_price_increase
+                type: quantitative
+                bin:
+                  step: 0.1
+              y:
+                field: buyer_name
+                type: nominal
+                aggregate: count
+                title: "# of customers"
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: chart_pct
+          - selectedDataFrameVariableName: simulated_prices_comparison
+  - cellId: 23f685b7-2a30-4ffa-a9c4-e20661901946 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        avg_increase = simulated_prices_comparison['average_price_increase'].median()
+        acceptable = acceptable_price_increase_percentage/100
+  - cellId: 51d7e8a3-ced5-4b7d-9de7-b076a694abd9 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: METRIC
+    config:
+      title: Median customer price increase
+      valueVariableName: avg_increase
+      showComparison: true
+      comparisonType: PERCENTAGE
+      comparisonVariableName: acceptable
+      comparisonFormat: INVERTED_POSITIVE_NEGATIVE
+      comparisonLabel: of acceptable increase
+      displayFormat:
+        format: PERCENT
+        currency: USD
+        columnType: NUMBER
+        numDecimalDigits: 2
+  - cellId: f718be8b-d176-40b7-a23f-c5f2da71b847 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT DATE_TRUNC('week', CREATED_DATE) AS week,buyer_name,
+               price_per_g,
+               SUM(grams_spice) AS total_grams,
+               SUM(total_cost) AS total_cost
+        FROM spice_purchases
+        GROUP BY 1,
+                 2,3
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: week_sales
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: d668dd74-0e56-49bb-9c98-b365b52b26fd # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT DATE_TRUNC('week', bp.CREATED_DATE) AS week,
+               bp.model_type,
+               SUM(sales.total_cost) AS real_revenue,
+               SUM(sales.total_grams * bp.price) AS modeled_revenue,
+               SUM(d.total_cost * sales.total_grams) AS real_cost,
+               SUM(sales.total_cost)-SUM(d.total_cost * sales.total_grams) AS real_profit,
+               SUM(sales.total_grams * bp.price)-SUM(d.total_cost * sales.total_grams) AS modeled_profit,
+               SUM(sales.total_grams * bp.price)-SUM(d.total_cost * sales.total_grams) - SUM(sales.total_cost)-SUM(d.total_cost * sales.total_grams) AS profit_difference
+        FROM buyers_prices bp
+        LEFT JOIN week_sales sales ON sales.week = DATE_TRUNC('week', bp.CREATED_DATE)
+        AND sales.buyer_name = bp.buyer_name
+        LEFT JOIN daily_costs_vs_prices d ON DATE_TRUNC('week', d.CREATED_DATE) = DATE_TRUNC('week', bp.CREATED_DATE)
+        GROUP BY 1,
+                 2
+                 ORDER BY 1 ASC
+        LIMIT 1000
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: simulated_week
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: d286d7e5-e1aa-4112-a4ab-c4c3a6ab70d4 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: simulated_week = simulated_week[3:]
+  - cellId: 44941215-2f43-49da-a0a0-5f901bd26e89 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Profit by modeled scenario
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              y:
+                field: model_type
+                type: nominal
+              color:
+                field: model_type
+                type: nominal
+              x:
+                field: modeled_profit
+                type: quantitative
+                aggregate: sum
+                scale:
+                  domainMin: -1000000
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: simulated_week
+  - cellId: 0473e7e6-2273-4188-9c2f-0c6ad30d6e08 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        SELECT SUM(CASE
+                       WHEN model_type = 'baseline_price' THEN modeled_profit
+                       ELSE NULL
+                   END) AS baseline_profit,
+               COALESCE(SUM(CASE
+                                WHEN model_type = {{simulate_model}} THEN modeled_profit
+                                ELSE NULL
+                            END), 
+                        SUM(CASE
+                                        WHEN model_type = 'baseline_price' THEN modeled_profit
+                                        ELSE NULL
+                                    END)
+                        ) AS modeled_profit
+        FROM simulated_week
+        WHERE DATE_TRUNC('month', week) = '2022-01-01'
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: outputs
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 80c071f7-9bfa-433b-bb7e-c360e400afd7 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        actual_prof = outputs['baseline_profit'][0]
+        predicted_prof = outputs['modeled_profit'][0]
+        new_modeled_profit = predicted_prof / actual_prof - 1
+  - cellId: f2c31b5f-d13b-4a2c-a32c-65d92eec9b82 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: METRIC
+    config:
+      title: Actual January Profit
+      valueVariableName: actual_prof
+      showComparison: false
+      comparisonType: null
+      comparisonVariableName: null
+      comparisonFormat: null
+      comparisonLabel: null
+      displayFormat:
+        format: CURRENCY_LONG
+        currency: USD
+        columnType: NUMBER
+        numDecimalDigits: 0
+  - cellId: 63541fc2-ce90-43fd-b810-e48de8008251 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: METRIC
+    config:
+      title: Modeled January Profit
+      valueVariableName: predicted_prof
+      showComparison: false
+      comparisonType: PERCENTAGE
+      comparisonVariableName: null
+      comparisonFormat: POSITIVE_NEGATIVE
+      comparisonLabel: ""
+      displayFormat:
+        format: CURRENCY
+        currency: USD
+        columnType: NUMBER
+        numDecimalDigits: 0
+  - cellId: 9d44b491-866a-4c44-869c-6f68e87cdd8a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: METRIC
+    config:
+      title: Profit increase
+      valueVariableName: new_modeled_profit
+      showComparison: false
+      comparisonType: null
+      comparisonVariableName: ""
+      comparisonFormat: null
+      comparisonLabel: ""
+      displayFormat:
+        format: PERCENT
+        currency: USD
+        columnType: NUMBER
+        numDecimalDigits: 2
+  - cellId: 5077bcee-b317-432e-afaa-b4026fd640a8 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |
+        ## Winner: Trailing 4 model @ a cost multiplier of 1.8x
+        **These are the most conservative parameters that lead to a profit increase greater than the median customer price increase.**
+
+        The trailing 4 day model smooths out the spikes and dips in production costs that were making pricing unstable, and performs _just slightly better_ than a simple 1-day carry-forward. Setting a standard multiple on production costs of 1.8x and applying that to _existing customer discounts_ results in a median 4.2% price increase for customers (with many customers **actually receiving a discount!**) and a 5.03% profit increase for Atreides
+
+        Atreides corp can expect to see a 5% boost across the board and more stable returns if we implement this new, dynamic pricing model. 
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 1825338c-e3b8-4ac7-8b67-ecd2b8486482
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: c6af563e-474e-40c2-8dd7-9ef5e121849a
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: f1826374-b75b-4d82-aed3-c39de3233f88
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 6f63f1d5-8de8-4596-bc05-9439b5f37ef3
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 60
+          elements:
+            - type: CELL
+              cellId: 0aa713ea-1359-440d-9d88-6e90f4e1971f
+              height: null
+              showLabel: true
+        - start: 60
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 2fd02ecb-5105-480d-b5a7-a60ac7c118fc
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 81
+          elements:
+            - type: CELL
+              cellId: ad45e851-9332-4e6a-9018-d96e27408107
+              height: 385
+              showLabel: true
+        - start: 81
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 903eef68-cf04-4e40-825c-a40f753322cf
+              height: 200
+              showLabel: true
+            - type: CELL
+              cellId: c7a08d23-ccf7-4930-ace4-066ec17cd8e6
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 70c691c1-98be-4748-9683-84d04de8be67
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: c1efaa16-6afd-4b68-a978-c861bb8d37a1
+              height: 250
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 8087f6bb-be11-4341-90db-bc857687a1f7
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: 15bf2580-6c7f-4ad9-9607-b0a43a5f9da3
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 7fe390df-1e85-4f27-a9ae-b963581e0721
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 1bbd7734-c024-49e6-9a06-af7b1645ddbf
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: f2eeae43-8ab0-48cb-aff9-8f7da3b1109c
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: a26b8eb1-ae83-4be9-a996-9d90f62d5bdc
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 98aee329-f9bb-4534-83d2-f3d178b5b153
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: c385270f-562b-49e1-94a3-2de298ab05be
+              height: null
+              showLabel: true
+        - start: 30
+          end: 60
+          elements:
+            - type: CELL
+              cellId: ee115d74-f551-4046-9997-7033da03efff
+              height: null
+              showLabel: true
+        - start: 60
+          end: 90
+          elements:
+            - type: CELL
+              cellId: d79909bd-2eaa-4beb-8a0a-551ffde6e36c
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 8b1ffe62-18e6-4dfd-8122-90e200f32da2
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: 51d7e8a3-ced5-4b7d-9de7-b076a694abd9
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 44941215-2f43-49da-a0a0-5f901bd26e89
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: f2c31b5f-d13b-4a2c-a32c-65d92eec9b82
+              height: null
+              showLabel: true
+        - start: 30
+          end: 60
+          elements:
+            - type: CELL
+              cellId: 63541fc2-ce90-43fd-b810-e48de8008251
+              height: null
+              showLabel: true
+        - start: 60
+          end: 90
+          elements:
+            - type: CELL
+              cellId: 9d44b491-866a-4c44-869c-6f68e87cdd8a
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 5077bcee-b317-432e-afaa-b4026fd640a8
+              height: null
+              showLabel: true
