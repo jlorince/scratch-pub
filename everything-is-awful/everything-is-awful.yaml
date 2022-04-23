@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 9512eb0b-35da-46ee-a0dd-fab5be15d4f0 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: ba3cd1f2-bc76-4f86-892f-b874b4dbf51b # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: 675b61f0-1c68-4674-b074-8d89ed267152 # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: everything is awful
@@ -23,4 +23,12 @@ appLayout:
     - CATEGORIES
     - STATUS
     - TABLE_OF_CONTENTS
-  rows: []
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 30e48c56-94d8-4ca0-ab5f-e1ca8f5b729a
+              height: null
+              showLabel: true
