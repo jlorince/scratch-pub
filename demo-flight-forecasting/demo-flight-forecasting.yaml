@@ -1,0 +1,271 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: ee501627-2074-4337-84a9-f64efbdf1456 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: null
+  projectId: 39824b6e-a583-417f-b49e-9ef731108c1e # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: "[Demo] Flight Forecasting"
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets: {}
+cells:
+  - cellId: 34848c2e-9fe3-421e-a032-b1a9e0405a33 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        import pandas as pd
+        from fbprophet import Prophet
+  - cellId: 15e1957b-354a-4f57-92af-481aebad635c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "# Flight Traffic Forecast"
+  - cellId: 551cfa02-7cb9-4a4a-bf8a-90e4c95b698a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: This forecast takes in historic flight volumes and generates a prediction going forward some number of months.
+  - cellId: 2cf3e298-32f0-4e68-9a11-c366de1cc765 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |
+        select * from flights_data
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: airline_query
+      enableCache: true
+      runOnLoad: true
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 163d2eec-0330-43a1-97fa-bbea3b53fc64 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        airlines = list(airline_query["airline"].unique())
+        airports = list(airline_query["departure_airport"].unique())
+  - cellId: 3ecf5efa-24dd-47d4-a569-08d06b775549 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Airline
+    cellType: INPUT
+    config:
+      inputType: DROPDOWN
+      name: airline
+      outputType: DYNAMIC
+      options:
+        valueOptions:
+          variableName: airlines
+      defaultValue: United
+  - cellId: 64efa60b-b9d4-42f1-97d7-b2820a0047d4 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Airport
+    cellType: INPUT
+    config:
+      inputType: DROPDOWN
+      name: airport
+      outputType: DYNAMIC
+      options:
+        valueOptions:
+          variableName: airports
+      defaultValue: SFO
+  - cellId: e6f26469-81f8-4bb5-ae4d-e2196ba0b354 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        -- This is a Dataframe SQL query (https://docs.hex.tech/developing-logic/querying-data-with-sql-cells#dataframe-sql)
+        -- It runs against the output of the earlier SQL query. It's the equivalent of doing this in pandas:
+        -- filtered_df = airline_query[(airline_query["airline"]==airline) & (airline_query["departure_airport"]==airport)]  
+
+        SELECT * 
+        FROM airline_query
+        WHERE airline = {{ airline }} AND departure_airport = {{ airport }}
+        GROUP BY 1,2,3,4
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: filtered_df
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      tableDisplayConfig: null
+  - cellId: 240d2f78-0b23-43c0-a140-06824c91d486 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Monthly Number of Airline Passengers
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        layer:
+          - data:
+              name: layer00
+            mark:
+              clip: true
+              type: line
+              point: true
+              filled: false
+              tooltip: true
+            encoding:
+              x:
+                type: temporal
+                field: month
+                title: Month
+              y:
+                type: quantitative
+                field: passengers
+                title: Passengers
+              color:
+                value: "#365CA3"
+        $schema: https://vega.github.io/schema/vega-lite/v4.json
+        resolve:
+          scale:
+            y: independent
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: filtered_df
+  - cellId: e699f2d6-3b75-40df-bcc5-f085b3866993 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        forecast_df = filtered_df.rename(columns={'month': 'ds','passengers': 'y'})
+        my_model = Prophet(interval_width=0.95,weekly_seasonality=False,daily_seasonality=False)
+        my_model.fit(forecast_df);
+  - cellId: 5ec87a56-2109-4723-958b-2bfdcdfb98b8 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Months to Forecast
+    cellType: INPUT
+    config:
+      inputType: NUMERIC_INPUT
+      name: months_to_forecast
+      outputType: NUMBER
+      options: null
+      defaultValue: 48
+  - cellId: df377628-b702-452c-91ba-89ae9569885c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        future_dates = my_model.make_future_dataframe(periods=months_to_forecast, freq='MS')
+        forecast = my_model.predict(future_dates)
+        forecast_values = round(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']],2)
+  - cellId: d6cc5284-0ddc-43a3-90aa-926a81601472 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Predicted Flight volume
+    cellType: CODE
+    config:
+      source: my_model.plot(forecast,uncertainty=True);
+  - cellId: 0d638355-c38f-4f34-b0c1-39b8a9a13d42 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: TABLE_DISPLAY
+    config:
+      dataFrameVariableName: forecast_values
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: true
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: yhat_upper
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: yhat_lower
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: yhat
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: ds
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: 667729a7-4851-4cf2-80c3-f652bb6dbeff # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: my_model.plot_components(forecast);
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 15e1957b-354a-4f57-92af-481aebad635c
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 551cfa02-7cb9-4a4a-bf8a-90e4c95b698a
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: 3ecf5efa-24dd-47d4-a569-08d06b775549
+              height: null
+              showLabel: true
+        - start: 30
+          end: 60
+          elements:
+            - type: CELL
+              cellId: 64efa60b-b9d4-42f1-97d7-b2820a0047d4
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 240d2f78-0b23-43c0-a140-06824c91d486
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: 5ec87a56-2109-4723-958b-2bfdcdfb98b8
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: d6cc5284-0ddc-43a3-90aa-926a81601472
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 0d638355-c38f-4f34-b0c1-39b8a9a13d42
+              height: null
+              showLabel: true
