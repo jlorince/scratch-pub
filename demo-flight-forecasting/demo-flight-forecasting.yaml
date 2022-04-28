@@ -1,14 +1,14 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 03ebd823-245e-4c06-af75-bc9ef83e2156 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: f6a9bcf7-ec26-4380-bc2f-a0c20731df0e # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 39824b6e-a583-417f-b49e-9ef731108c1e # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: "[Demo] Flight Forecasting"
   codeLanguage: PYTHON
   categories:
-    - name: Template
-    - name: Internal
     - name: External
+    - name: Internal
+    - name: Template
 projectAssets: {}
 sharedAssets: {}
 cells:
